@@ -26,17 +26,69 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            
-            <div class="content">
-                <div class="title m-b-md">
-                    NODOS
-                </div>
 
-                    imprimir lista de numeros
+            <div class="container-fluid">
+                <div class="row">
+                <h1>NODOS</h1>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <hr>
+                        <h2>Guardar Numero</h2>
+                        <br>
+                        {{ Form::open(array('url' => '/guardarNumero')) }}
+                            {{Form::label('numero_lbl', 'Ingresa el numero a guardar')}}
+                            <br>
+                            {{Form::number('numero')}}
+                            <br>
+
+                            {{Form::submit('Generar')}}
+                        {{ Form::close() }}
+
                     <br>
-                    dejar meter mas numeros
-                <div class="links">
-                    
+                        <h2>listado Numeros</h2>
+                        <hr>
+                        @if (count($listadoNumeros) > 0)
+                        Cantidad de numeros Guardados: {{count($listadoNumeros)}}
+                        {{$total = 0}}
+                        <br>
+                            @foreach ($listadoNumeros as $numero)
+                            id{{$numero->id}} -Numero: {{$numero->numero}}
+                            <?php $total += $numero->numero; ?>
+                            <br>
+                            @endforeach
+                        @endif
+                        Total: {{$total}}
+                    </div>
+
+                    <div class="col-6">
+                        <hr>
+                        <h2>Guardar nuevo servidor o url para consulta de sumas</h2>
+                        <br>
+                        {{ Form::open(array('url' => '/guardarURL')) }}
+                            {{Form::label('url_lbl', 'Ingresa la url del api para retornar suma')}}
+                            <br>
+                            {{Form::text('url')}}
+                            <br>
+
+                            {{Form::submit('Guardar')}}
+                        {{ Form::close() }}
+
+                    <br>
+                        <h2>listado de servidores</h2>
+                        <hr>
+                        @if (count($listadoURL) > 0)
+                        Cantidad de numeros Guardados: {{count($listadoURL)}}
+                        {{$total = 0}}
+                        <br>
+                            @foreach ($listadoURL as $servidor)
+                            id{{$servidor->id}} -Numero: {{$servidor->url}}
+                            <br>
+                            @endforeach
+                        @endif
+                    </div>
+
+
                 </div>
             </div>
         </div>

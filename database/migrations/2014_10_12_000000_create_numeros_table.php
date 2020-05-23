@@ -16,7 +16,7 @@ class CreateNumerosTable extends Migration
         Schema::create('numeros', function (Blueprint $table) {
             $table->id();
             $table->float('numero');
-            $table->string('nombre')->unique();
+            $table->string('nombre')->unique()->nullable();
             $table->timestamps();
         });
     }

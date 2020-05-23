@@ -13,3 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', 'NumerosController@index');
+
+Route::post('/guardarNumero', 'NumerosController@guardarNumeroWeb');
+
+Route::post('/guardarNumero', 'ServersController@guardarURL');
