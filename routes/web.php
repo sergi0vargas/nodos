@@ -16,4 +16,7 @@ Route::get('/', 'NumerosController@index');
 
 Route::post('/guardarNumero', 'NumerosController@guardarNumeroWeb');
 
-Route::post('/guardarNumero', 'ServersController@guardarURL');
+Route::post('/guardarURL', 'NumerosController@guardarURL');
+
+
+Route::get('/suma', 'NumerosController@retornaSumaNumeros');

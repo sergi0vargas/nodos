@@ -50,15 +50,13 @@
                         <hr>
                         @if (count($listadoNumeros) > 0)
                         Cantidad de numeros Guardados: {{count($listadoNumeros)}}
-                        {{$total = 0}}
                         <br>
                             @foreach ($listadoNumeros as $numero)
-                            id{{$numero->id}} -Numero: {{$numero->numero}}
-                            <?php $total += $numero->numero; ?>
+                            id{{$numero->id}} -  Numero:{{$numero->numero}}
                             <br>
                             @endforeach
                         @endif
-                        Total: {{$total}}
+                        Total: {{$suma}}
                     </div>
 
                     <div class="col-6">
@@ -77,12 +75,11 @@
                     <br>
                         <h2>listado de servidores</h2>
                         <hr>
-                        @if (count($listadoURL) > 0)
-                        Cantidad de numeros Guardados: {{count($listadoURL)}}
-                        {{$total = 0}}
+                        @if (count($listadoServidores) > 0)
+                        Cantidad de Servidores Guardados: {{count($listadoServidores)}}
                         <br>
-                            @foreach ($listadoURL as $servidor)
-                            id{{$servidor->id}} -Numero: {{$servidor->url}}
+                            @foreach ($listadoServidores as $servidor)
+                            id{{$servidor->id}} -URL:{{$servidor->url}}
                             <br>
                             @endforeach
                         @endif

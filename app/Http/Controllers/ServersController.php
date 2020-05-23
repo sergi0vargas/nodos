@@ -20,7 +20,7 @@ class ServersController extends Controller
         $nuevoServer->url = $request->input('url');
         $nuevoServer->save();
 
-        $listadoURL = Numero::all();
-        return redirect('/')->with('listadoURL',$listadoURL);
+        $listadoServidores = Server::all();
+        return redirect('/')->with('listadoServidores',$listadoServidores);
     }
 }
