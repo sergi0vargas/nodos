@@ -2,17 +2,11 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 
-class Server
+class Server extends Model
 {
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'ip', 'url',
     ];
-
 }

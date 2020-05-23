@@ -2,17 +2,11 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 
-class Numero
+class Numero extends Model
 {
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'numero', 'nombre',
     ];
-
 }
