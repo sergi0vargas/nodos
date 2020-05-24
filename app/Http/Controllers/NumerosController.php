@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Numero;
 use App\Server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class NumerosController extends Controller
 {
@@ -49,6 +50,16 @@ class NumerosController extends Controller
         return response()->json(['total' => $suma,'ip' =>  $externalIp ]);
     }
 
+    public function LlamarServidoresYSumar(){
+
+        $listadoServidores = Server::all();
+        //
+        foreach ($listadoServidores as $servidor) {
+            $response = Http::get($servidor->url);
+            dd($response->body());
+        }
+    }
+
     public function guardarURL(Request $request){
 
         $nuevoServer = new Server();
@@ -62,5 +73,18 @@ class NumerosController extends Controller
         $listadoServidores = Server::all();
         return redirect('/')->with('listadoNumeros',$listadoNumeros)->with('listadoServidores',$listadoServidores);
     }
+
+    public function borrarURL(int $id){
+
+        $serverABorrar = Server::get($id);
+
+        $serverABorrar->delete();
+
+        $listadoNumeros = Numero::all();
+        $listadoServidores = Server::all();
+        return redirect('/')->with('listadoNumeros',$listadoNumeros)->with('listadoServidores',$listadoServidores);
+    }
+
+    //borrarURL
 
 }

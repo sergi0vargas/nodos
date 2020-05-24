@@ -80,9 +80,15 @@
                         <br>
                             @foreach ($listadoServidores as $servidor)
                             id{{$servidor->id}} -URL:{{$servidor->url}}
+                            <a class="btn btn-danger" href="">Borrar</a>
                             <br>
                             @endforeach
                         @endif
+                        <h2>solicitar y sumar</h2>
+                        <hr>
+                        {{ Form::open(array('url' => '/llamarASuma')) }}
+                            {{Form::submit('GO')}}
+                        {{ Form::close() }}
                     </div>
 
 
