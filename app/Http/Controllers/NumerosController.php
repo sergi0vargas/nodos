@@ -62,5 +62,5 @@ class NumerosController extends Controller
         $listadoServidores = Server::all();
         return redirect('/')->with('listadoNumeros',$listadoNumeros)->with('listadoServidores',$listadoServidores);
     }
-
+// por aca pase 
 }
