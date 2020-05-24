@@ -56,7 +56,7 @@ class NumerosController extends Controller
         //
         foreach ($listadoServidores as $servidor) {
             $response = Http::get($servidor->url);
-            dd($response->body());
+            print($response->body());
         }
     }
 
