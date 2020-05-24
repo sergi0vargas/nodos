@@ -34,7 +34,11 @@ class NumerosController extends Controller
         return redirect('/')->with('listadoNumeros',$listadoNumeros)->with('listadoServidores',$listadoServidores);
     }
 
+    //cuando me consultan
     public function retornaSumaNumeros(Request $request){
+
+
+        //leer quien me llamo, y guardar
 
         $listadoNumeros = Numero::all();
 
@@ -43,21 +47,55 @@ class NumerosController extends Controller
             $suma += $n->numero;
         }
 
+        $listadoServidores = Server::all();
 
-        $externalContent = file_get_contents('http://checkip.dyndns.com/');
-        preg_match('/Current IP Address: \[?([:.0-9a-fA-F]+)\]?/', $externalContent, $m);
-        $externalIp = $m[1];
-        return response()->json(['total' => $suma,'ip' =>  $externalIp ]);
+        $ipCliente = $_SERVER['REMOTE_ADDR'];
+        foreach ($listadoServidores as $servidor) {
+            if(strpos($servidor->url, $ipCliente) !== false){
+                $servidor->yaMeConsulto = 1;
+                $servidor->save();
+                print("NO encontrado encontrado , marcando leido");
+            }else{
+
+            }
+        }
+        //esto es para saber la ip de internet
+        /*
+            $externalContent = file_get_contents('http://checkip.dyndns.com/');
+            preg_match('/Current IP Address: \[?([:.0-9a-fA-F]+)\]?/', $externalContent, $m);
+            $externalIp = $m[1];
+        */
+
+        return response()->json(['total' => $suma,'ip' => $_SERVER['REMOTE_ADDR'] ]);
     }
 
+    //cuando yo consulto a los demas
     public function LlamarServidoresYSumar(){
 
         $listadoServidores = Server::all();
-        //
+        $total = 0;
         foreach ($listadoServidores as $servidor) {
-            $response = Http::get($servidor->url);
-            print($response->body());
+            if($servidor->yaLoConsulte == 1)
+                print("servidor consultado anteriormente ->");
+            //me guardo el servidor como consultado
+            $servidor->yaLoConsulte = 1;
+            $servidor->save();
+
+            $response = Http::get($servidor->url)['total'];
+            $total += floatval ($response);
+            print("Respuesta Servidor ".$response."<br>");
         }
+        //Falta sumarme a mi mismo
+        $listadoNumeros = Numero::all();
+        $suma = 0;
+        foreach ($listadoNumeros as $n) {
+            $suma += $n->numero;
+        }
+        print("<br>");
+        print("Valor sin sumar el local".$total."<br>");
+        print("Valor Local ".$suma."<br>");
+        print("<br>");
+        print("Valor total final ".($total+$suma));
     }
 
     public function guardarURL(Request $request){

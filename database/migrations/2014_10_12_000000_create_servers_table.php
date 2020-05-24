@@ -17,6 +17,8 @@ class CreateServersTable extends Migration
             $table->id();
             $table->string('ip')->nullable();
             $table->string('url')->unique()->nullable();
+            $table->boolean('yaLoConsulte')->nullable();
+            $table->boolean('yaMeConsulto')->nullable();
             $table->timestamps();
         });
     }
