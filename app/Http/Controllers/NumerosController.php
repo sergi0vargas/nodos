@@ -7,6 +7,9 @@ use App\Server;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+
+// Metodo que utilizamos para Mostrar los numeros que se ingresaron por los usuarios
+
 class NumerosController extends Controller
 {
     public function index()
@@ -22,6 +25,9 @@ class NumerosController extends Controller
         return view('index')->with('listadoNumeros', $listadoNumeros)->with('listadoServidores', $listadoServidores)->with('suma',$suma);
     }
 
+
+    // Metodo que utilizamos para guardar los numeros que seran ingresados por los usuarios
+
     public function guardarNumeroWeb(Request $request){
 
         $numeroNuevo = new Numero();
@@ -34,11 +40,11 @@ class NumerosController extends Controller
         return redirect('/')->with('listadoNumeros',$listadoNumeros)->with('listadoServidores',$listadoServidores);
     }
 
-    //cuando me consultan
+    // Metodo que utilizamos cuando nos consultan los valores 
+
     public function retornaSumaNumeros(Request $request){
 
-
-        //leer quien me llamo, y guardar
+        //Leer quien me llamo, y guardar
 
         $listadoNumeros = Numero::all();
 
@@ -48,13 +54,15 @@ class NumerosController extends Controller
         }
 
         $listadoServidores = Server::all();
-
+        //Saber la ip del server remoto
         $ipCliente = $_SERVER['REMOTE_ADDR'];
+
+        // Recorrido de validacion de consulta de servidores. 
         foreach ($listadoServidores as $servidor) {
             if(strpos($servidor->url, $ipCliente) !== false){
                 $servidor->yaMeConsulto = 1;
                 $servidor->save();
-                print("NO encontrado encontrado , marcando leido");
+                print("NO encontrado, marcando leido");
             }else{
 
             }
@@ -65,26 +73,27 @@ class NumerosController extends Controller
             preg_match('/Current IP Address: \[?([:.0-9a-fA-F]+)\]?/', $externalContent, $m);
             $externalIp = $m[1];
         */
-
+        //JSON QUE ENTREGA LA INFORMACION DE LA SUMA DE LOS VALORES ENTREGADOS Y LA IP QUE LO IDENTIFICA
         return response()->json(['total' => $suma,'ip' => $_SERVER['REMOTE_ADDR'] ]);
     }
 
-    //cuando yo consulto a los demas
+    //Cuando yo consulto a los demas
     public function LlamarServidoresYSumar(){
 
         $listadoServidores = Server::all();
         $total = 0;
         foreach ($listadoServidores as $servidor) {
             if($servidor->yaLoConsulte == 1)
-                print("servidor consultado anteriormente ->");
-            //me guardo el servidor como consultado
+                print("Servidor Consultado Anteriormente -> ");
+            //Me guardo el servidor como consultado.
             $servidor->yaLoConsulte = 1;
             $servidor->save();
-
+           // JSON QUE RECIBE LA INFORMACION DE LAS URL ALMACENADAS
             $response = Http::get($servidor->url)['total'];
             $total += floatval ($response);
             print("Respuesta Servidor ".$response."<br>");
         }
+
         //Falta sumarme a mi mismo
         $listadoNumeros = Numero::all();
         $suma = 0;
@@ -92,20 +101,19 @@ class NumerosController extends Controller
             $suma += $n->numero;
         }
         print("<br>");
-        print("Valor sin sumar el local".$total."<br>");
-        print("Valor Local ".$suma."<br>");
+        print("Valor Sin Sumar el Local: ".$total."<br>");
+        print("Valor Local: ".$suma."<br>");
         print("<br>");
-        print("Valor total final ".($total+$suma));
+        print("Valor Total Final: ".($total+$suma));
     }
 
+    // Metodo que almacen la URL recibida en la base de datos y los imprime en pantalla.
     public function guardarURL(Request $request){
 
         $nuevoServer = new Server();
 
         $nuevoServer->url = $request->input('url');
         $nuevoServer->save();
-
-
 
         $listadoNumeros = Numero::all();
         $listadoServidores = Server::all();
