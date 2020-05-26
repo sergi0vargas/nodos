@@ -119,6 +119,8 @@ class NumerosController extends Controller
         $listadoServidores = Server::all();
         return redirect('/')->with('listadoNumeros',$listadoNumeros)->with('listadoServidores',$listadoServidores);
     }
+    // Funcion que Elimina Las URL almacenadas en nuestra base de datos, Como Vecinos.
+    //Retorna en Pantalla Las URl de Los Servidores Almacenados.
 
     public function borrarURL(int $id){
 
@@ -130,8 +132,4 @@ class NumerosController extends Controller
         $listadoServidores = Server::all();
         return redirect('/')->with('listadoNumeros',$listadoNumeros)->with('listadoServidores',$listadoServidores);
     }
-
-    //borrarURL
-
-// por aca pase
 }
